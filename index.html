@@ -28,7 +28,6 @@
             padding: 3rem; max-width: 1400px; margin: 0 auto;
         }
 
-        /* IDLE MODE (Burn-In Protection) */
         body.idle-mode #main-content-container { opacity: 0.25; transition: opacity 2s ease-in-out; }
         body.active-mode #main-content-container { opacity: 1; transition: opacity 0.5s ease-in-out; }
         
@@ -53,7 +52,6 @@
         .chart-header { text-align: center; margin-bottom: 3rem; }
         .chart-header h1 { font-size: var(--title-size); text-transform: uppercase; margin: 0; transition: font-size 0.3s; }
         
-        /* Pagination Container */
         #main-content-container { width: 100%; display: flex; flex-direction: column; align-items: center; flex-grow: 1; }
         
         .seating-page {
@@ -62,7 +60,6 @@
             animation: fadeIn 0.8s ease-in-out forwards;
         }
 
-        /* Layout Management within active pages */
         .seating-page.active.layout-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 4rem; }
         .seating-page.active.layout-columns { display: block; column-count: 3; column-gap: 4rem; }
         @media (max-width: 1000px) { .seating-page.active.layout-columns { column-count: 2; } }
@@ -93,7 +90,6 @@
         #searchInput::placeholder { color: var(--text-color); opacity: 0.7; }
         #searchInput:focus { border-color: var(--highlight); }
 
-        /* Page Indicators */
         .page-indicators { display: flex; gap: 10px; margin-top: 2rem; }
         .dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: background 0.3s; }
         .dot.active { background: var(--text-color); }
@@ -187,7 +183,6 @@
             startLoop();
         }
 
-        // --- Navigation Logic ---
         function showPage(index) {
             if(totalPages === 0) return;
             currentPageIndex = index;
@@ -212,23 +207,19 @@
             }, loopIntervalMs);
         }
 
-        // --- Search & Idle Handling ---
         function handleInteraction() {
-            // Wake up screen
             document.body.classList.remove('idle-mode');
             document.body.classList.add('active-mode');
             
             clearTimeout(idleTimer);
             clearInterval(loopTimer); 
 
-            // Set countdown to clear search and resume
             idleTimer = setTimeout(() => {
                 searchInput.value = '';
                 applySearch(); 
                 showPage(0);   
                 startLoop();   
                 
-                // Only dim the screen if the operator has Burn-In Protection enabled
                 if (burnInEnabled) {
                     document.body.classList.remove('active-mode');
                     document.body.classList.add('idle-mode');
@@ -271,7 +262,6 @@
         window.addEventListener('mousemove', handleInteraction);
         window.addEventListener('keydown', handleInteraction);
 
-        // --- Storage Listeners ---
         window.addEventListener('storage', (e) => {
             if (e.key === 'mh_bgColor') root.style.setProperty('--bg-color', e.newValue);
             if (e.key === 'mh_textColor') root.style.setProperty('--text-color', e.newValue);
@@ -302,7 +292,6 @@
                     document.body.classList.remove('idle-mode');
                     document.body.classList.add('active-mode');
                 } else {
-                    // Re-trigger the interaction handler to start the timer properly
                     handleInteraction(); 
                 }
             }
@@ -339,7 +328,6 @@
             }
         });
 
-        // --- Initialization ---
         ['mh_bgColor', 'mh_textColor', 'mh_font', 'mh_titleSize', 'mh_tableSize', 'mh_guestSize'].forEach(key => {
             if(localStorage.getItem(key)) {
                 let cssVar = '--' + key.replace('mh_', '').replace(/([A-Z])/g, "-$1").toLowerCase();
