@@ -17,7 +17,6 @@
             background-image: linear-gradient(rgba(255, 51, 51, 0.03) 50%, rgba(0, 0, 0, 0.1) 50%); background-size: 100% 4px;
         }
 
-        /* Updated for Landscape Architecture */
         .operator-panel {
             width: 100%; max-width: 1600px; background: transparent; padding: 2.5rem;
             border: 2px solid var(--term-red); border-radius: 4px;
@@ -237,14 +236,12 @@
     <script>
         function pushUpdate(key, value) { localStorage.setItem(key, value); }
 
-        // Core visual listeners
         document.getElementById('fontSelect').addEventListener('change', (e) => pushUpdate('mh_font', e.target.value));
         document.getElementById('layoutSelect').addEventListener('change', (e) => pushUpdate('mh_layout', e.target.value));
         document.getElementById('bgColor').addEventListener('input', (e) => pushUpdate('mh_bgColor', e.target.value));
         document.getElementById('textColor').addEventListener('input', (e) => pushUpdate('mh_textColor', e.target.value));
         document.getElementById('burnInToggle').addEventListener('change', (e) => pushUpdate('mh_burnIn', e.target.value));
 
-        // Slider listeners
         function handleSlider(id, storageKey, valDisplayId, suffix = '') {
             document.getElementById(id).addEventListener('input', (e) => {
                 document.getElementById(valDisplayId).innerText = e.target.value;
@@ -252,17 +249,14 @@
             });
         }
         
-        // Timing Sliders
         handleSlider('tablesPerPage', 'mh_tablesPerPage', 'tablesPageVal');
         handleSlider('loopInterval', 'mh_loopInterval', 'loopTimeVal');
         handleSlider('idleTimeout', 'mh_idleTimeout', 'idleTimeVal');
         
-        // Typography Sliders
         handleSlider('titleSize', 'mh_titleSize', 'titleSizeVal', 'rem');
         handleSlider('tableSize', 'mh_tableSize', 'tableSizeVal', 'rem');
         handleSlider('guestSize', 'mh_guestSize', 'guestSizeVal', 'rem');
 
-        // Reset Functions
         window.resetSetting = function(storageKey, elementId, defaultValue) {
             localStorage.removeItem(storageKey); document.getElementById(elementId).value = defaultValue; pushUpdate('mh_trigger_reset', storageKey); 
         };
@@ -270,7 +264,6 @@
             localStorage.removeItem(storageKey); document.getElementById(elementId).value = defaultValue; document.getElementById(valId).innerText = defaultValue; pushUpdate('mh_trigger_reset', storageKey);
         };
 
-        // Media Handlers
         ['logoUpload', 'floorplanUpload'].forEach(id => {
             document.getElementById(id).addEventListener('change', function(e) {
                 if (e.target.files[0]) {
@@ -279,7 +272,6 @@
             });
         });
 
-        // Data Processors
         function getCurrentGuests() { return JSON.parse(localStorage.getItem('mh_guestData')) || []; }
 
         document.getElementById('processXlsxBtn').addEventListener('click', () => {
